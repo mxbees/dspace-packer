@@ -4,3 +4,6 @@ input
 input/*
 output
 output/*
+*csv
+*xlsx
+*xls
