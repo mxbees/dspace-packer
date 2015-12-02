@@ -1,0 +1,254 @@
+<dublin_core>
+ <dcvalue element="title" qualifier="none">
+    <xsl:value-of select="title" />
+ </dcvalue>
+  <dcvalue element="contributor" qualifier="author">
+    <xsl:value-of select="contributor_author" />
+ </dcvalue>
+ <dcvalue element="creator" qualifier="none">
+    <xsl:value-of select="creator" />
+ </dcvalue>
+ <dcvalue element="date" qualifier="none">
+    <xsl:value-of select="date" />
+ </dcvalue>
+ <dcvalue element="date" qualifier="none">
+    <xsl:value-of select="date1" />
+ </dcvalue>
+ <dcvalue element="date" qualifier="accessioned">
+    <xsl:value-of select="date_accessioned" />
+ </dcvalue>
+ <dcvalue element="date" qualifier="copyright">
+    <xsl:value-of select="date_copyright" />
+ </dcvalue>
+ <dcvalue element="date" qualifier="created">
+    <xsl:value-of select="date_created" />
+ </dcvalue>
+ <dcvalue element="date" qualifier="issued">
+    <xsl:value-of select="date_issued" />
+ </dcvalue>
+ <dcvalue element="date" qualifier="issued">
+    <xsl:value-of select="date_issued_ymd" />
+ </dcvalue>
+ <dcvalue element="date" qualifier="issued">
+    <xsl:value-of select="date_issued_ym" />
+ </dcvalue>
+ <dcvalue element="date" qualifier="issued">
+    <xsl:value-of select="date_issued_y" />
+ </dcvalue>
+ <dcvalue element="date" qualifier="issued">
+    <xsl:value-of select="date_issued2" />
+ </dcvalue>
+ <dcvalue element="date" qualifier="submitted">
+    <xsl:value-of select="date_submitted" />
+ </dcvalue>
+ <dcvalue element="identifier" qualifier="none">
+    <xsl:value-of select="identifier" />
+ </dcvalue>
+ <dcvalue element="identifier" qualifier="citation">
+    <xsl:value-of select="identifier_citation" />
+ </dcvalue>
+ <dcvalue element="identifier" qualifier="govdoc">
+    <xsl:value-of select="identifier_govdoc" />
+ </dcvalue>
+ <dcvalue element="identifier" qualifier="isbn">
+    <xsl:value-of select="identifier_isbn" />
+ </dcvalue>
+ <dcvalue element="identifier" qualifier="issn">
+    <xsl:value-of select="identifier_issn" />
+ </dcvalue>
+ <dcvalue element="identifier" qualifier="sici">
+    <xsl:value-of select="identifier_sici" />
+ </dcvalue>
+ <dcvalue element="identifier" qualifier="ismn">
+    <xsl:value-of select="identifier_ismn" />
+ </dcvalue>
+ <dcvalue element="identifier" qualifier="other">
+    <xsl:value-of select="identifier_other" />
+ </dcvalue>
+ <dcvalue element="identifier" qualifier="uri">
+    <xsl:value-of select="identifier_uri" />
+ </dcvalue>
+ <dcvalue element="description" qualifier="none">
+    <xsl:value-of select="description" />
+ </dcvalue>
+ <dcvalue element="description" qualifier="abstract">
+    <xsl:value-of select="description_abstract" />
+ </dcvalue>
+ <dcvalue element="description" qualifier="provenance">
+    <xsl:value-of select="description_provenance" />
+ </dcvalue>
+ <dcvalue element="description" qualifier="sponsorship">
+    <xsl:value-of select="description_sponsorship" />
+ </dcvalue>
+ <dcvalue element="description" qualifier="tableofcontents">
+    <xsl:value-of select="description_tableofcontents" />
+ </dcvalue>
+ <dcvalue element="description" qualifier="uri">
+    <xsl:value-of select="description_uri" />
+ </dcvalue>
+ <dcvalue element="format" qualifier="none">
+    <xsl:value-of select="format" />
+ </dcvalue>
+ <dcvalue element="format" qualifier="none">
+    <xsl:value-of select="format1" />
+ </dcvalue>
+ <dcvalue element="format" qualifier="none">
+    <xsl:value-of select="format2" />
+ </dcvalue>
+ <dcvalue element="format" qualifier="extent">
+    <xsl:value-of select="format_extent" />
+ </dcvalue>
+ <dcvalue element="format" qualifier="medium">
+    <xsl:value-of select="format_medium" />
+ </dcvalue>
+ <dcvalue element="format" qualifier="mimetype">
+    <xsl:value-of select="format_mimetype" />
+ </dcvalue>
+    <dcvalue element="language" qualifier="none">
+    <xsl:value-of select="language" />
+ </dcvalue>
+    <dcvalue element="language" qualifier="iso"> <xsl:choose> <xsl:when test="language_iso = 'English (Canada)'"> en_CA	</xsl:when> <xsl:when test="language_iso = 'English (United States)'"> en_CA </xsl:when> <xsl:when test="language_iso='English'"> en </xsl:when> <xsl:when test="language_iso = 'French'"> fr	</xsl:when> <xsl:when test="language_iso = 'Italian'"> it </xsl:when> <xsl:when test="language_iso = 'German'"> en_CA </xsl:when> <xsl:when test="language_iso = 'Japanese'"> jp </xsl:when> <xsl:when test="language_iso = 'Other'"> Other </xsl:when> </xsl:choose> </dcvalue>
+    <dcvalue element="publisher" qualifier="none">
+    <xsl:value-of select="publisher" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="none">
+    <xsl:value-of select="relation" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="isformatof">
+    <xsl:value-of select="relation_isformatof" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="ispartof">
+    <xsl:value-of select="relation_ispartof" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="ispartofseries">
+    <xsl:value-of select="relation_ispartofseries" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="ispartofseries">
+    <xsl:value-of select="relation_ispartofseries2" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="ispartofseries">
+    <xsl:value-of select="relation_ispartofseries3" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="ispartofseries">
+    <xsl:value-of select="relation_ispartofseries4" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="ispartofseries">
+    <xsl:value-of select="relation_ispartofseries_01" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="ispartofseries">
+    <xsl:value-of select="relation_ispartofseries_02" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="haspart">
+    <xsl:value-of select="relation_haspart" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="isversionof">
+    <xsl:value-of select="relation_isversionof" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="hasversion">
+    <xsl:value-of select="relation_hasversion" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="isbasedon">
+    <xsl:value-of select="relation_isbasedon" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="isreferencedby">
+    <xsl:value-of select="relation_isreferencedby" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="requires">
+    <xsl:value-of select="relation_requires" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="replaces">
+    <xsl:value-of select="relation_replaces" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="isreplacedby">
+    <xsl:value-of select="relation_isreplacedby" />
+ </dcvalue>
+    <dcvalue element="relation" qualifier="uri">
+    <xsl:value-of select="relation_uri" />
+ </dcvalue>
+    <dcvalue element="rights" qualifier="uri">
+    <xsl:value-of select="rights_uri" />
+ </dcvalue>
+    <dcvalue element="rights" qualifier="none">
+    <xsl:value-of select="rights" />
+ </dcvalue>
+    <dcvalue element="rights" qualifier="none">
+    <xsl:value-of select="rights_01" />
+ </dcvalue>
+    <dcvalue element="rights" qualifier="none">
+    <xsl:value-of select="rights_02" />
+ </dcvalue>
+    <dcvalue element="subject" qualifier="classification">
+    <xsl:value-of select="subject_classification" />
+ </dcvalue>
+    <dcvalue element="subject" qualifier="lcc">
+    <xsl:value-of select="subject_lcc" />
+ </dcvalue>
+    <dcvalue element="subject" qualifier="lcsh">
+    <xsl:value-of select="subject_lcsh" />
+ </dcvalue>
+    <dcvalue element="subject" qualifier="mesh">
+    <xsl:value-of select="subject_mesh" />
+ </dcvalue>
+    <dcvalue element="subject" qualifier="other">
+    <xsl:value-of select="subject_other" />
+ </dcvalue>
+	<dcvalue element="title" qualifier="alternative">
+    <xsl:value-of select="title_alternative" />
+ </dcvalue>
+ <dcvalue element="type" qualifier="none">
+    <xsl:value-of select="type" />
+ </dcvalue>
+ <xsl:for-each select="subject" >
+  <dcvalue element="subject" qualifier="none">
+    <xsl:value-of select="." />
+ </dcvalue>
+ </xsl:for-each>
+	<dcvalue element="subject" qualifier="none">
+    <xsl:value-of select="subject_01" />
+ </dcvalue>
+	<dcvalue element="subject" qualifier="none">
+    <xsl:value-of select="subject_02" />
+ </dcvalue>
+	<dcvalue element="subject" qualifier="none">
+    <xsl:value-of select="subject_03" />
+ </dcvalue>
+	<dcvalue element="subject" qualifier="none">
+    <xsl:value-of select="subject_04" />
+ </dcvalue>
+	<dcvalue element="subject" qualifier="none">
+    <xsl:value-of select="subject_05" />
+ </dcvalue>
+	<dcvalue element="subject" qualifier="none">
+    <xsl:value-of select="subject_06" />
+ </dcvalue>
+	<dcvalue element="subject" qualifier="none">
+    <xsl:value-of select="subject_07" />
+ </dcvalue>
+	<dcvalue element="subject" qualifier="none">
+    <xsl:value-of select="subject_08" />
+ </dcvalue>
+</dublin_core>
+
+<!--
+The MIT License (MIT)
+
+Copyright (c) 2015 Gabriela Mircea
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->

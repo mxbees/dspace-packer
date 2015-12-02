@@ -1,9 +1,7 @@
 test-files
 test-files/*
-input
-input/*
-output
-output/*
 *csv
 *xlsx
 *xls
+*xml
+*xsl
