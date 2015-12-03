@@ -12,105 +12,67 @@ c2=1
 c3=1
 id=$( ls $objects | xargs -I{} basename {} .pdf )
 #mkdir /tmp/dspace
-
-package () {
-for i in $(ls $objects)
-do
-    #make packages
-    mkdir record.$id
-    cp $objects/$i record.$id/
-    echo $i > record.$id/contents
-    echo '<?xml version="1.0" encoding="UTF-8"?>' > record.$id/dublin_core.xml
-    echo '<dublin_core>' >> record.$id/dublin_core.xml
-    
-done
-}
-
-
+sed 1,1d $csv > /tmp/dspace/no_head.csv
     #split metadata
-split () {
-    while [ $c1 -le $field_number ]
-    do
-        x=$(head -n 1 $csv | awk -v r=$c2 'BEGIN { FS = "|" } ; {print $r}')
-        cut -d'|' -f$c2 sample.csv | tail -n +2 > /tmp/dspace/$x.txt
+split_meta () {
+while [ $c1 -le $field_number ]
+do
+    x=$(head -n 1 $csv | awk -v r=$c2 'BEGIN { FS = "|" } ; {print $r}')
+    cut -d'|' -f$c2 sample.csv | tail -n +2 > /tmp/dspace/$x.txt
     c1=$((c1+1))
     c2=$((c2+1))
-    done
-}    
+done
+}
+#make packages
+package () {
+ls $objects > /tmp/dspace/objects.txt
+while read line
+do
+    id=$(basename $line .pdf)
+    mkdir record.$id
+    cp $objects/$line record.$id
+    echo $line > record.$id/contents
+done < /tmp/dspace/objects.txt
+}
+
 populate () {
-    for j in $(ls /tmp/dspace/*.txt)
-    do
-        y=$( basename $j .txt )
-        
-        if [ "$y" = "identifier" ]
-        then
-        while [ $c3 -le $no_objects ] 
-        do
-            line=$(awk -v c=$c3 'NR==c{print; exit}' $j)
-            if [ "$c3" = 1 ]
-            then
-                echo "    <dcvalue element=\"identifier\" qualifier=\"none\">$line</dcvalue>" >> record.$id/dublin_core.xml
-            fi
-        c3=$((c3+1)) 
-        done 
-        fi
-        
-        if [ "$y" = "abstract" ]
-        then
-        while read line
-        do
-            if [ "$id" = "$line" ]
-            then
-                echo "  <dcvalue element=\"description\" qualifier=\"abstract\">$line</dcvalue>" >> record.$id/dublin_core.xml
-            fi
-        done < $j
-        fi
-        
-    done
-    echo '</dublin_core>' >> record.$id/dublin_core.xml
+OLDIFS=$IFS
+IFS='|'
+for j in $( ls $objects ) 
+do
+while read $field_headers
+do
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > record.$identifier/dublin_core.xml
+    echo "<dublin_core>" >> record.$identifier/dublin_core.xml
+    echo "  <dcvalue qualifier=\"none\" element=\"title\">$title</dcvalue" >> record.$identifier/dublin_core.xml
+    echo "  <dcvalue qualifier=\"author\" element=\"contributor\">$author</dcvalue>" >> record.$identifier/dublin_core.xml
+    echo "  <dcvalue element=\"contributor\" qualifier=\"advisor\">$advisor</dcvalue>" >> record.$identifier/dublin_core.xml
+    echo "  <dcvalue qualifier=\"issued\" element=\"date\">$year</dcvalue" >> record.$identifier/dublin_core.xml
+    echo "  <dcvalue qualifier=\"none\" element=\"identifier\">$identifier</dcvalue>" >> record.$identifier/dublin_core.xml
+    echo "  <dcvalue qualifier=\"citation\" element=\"identifier\">$citation</dcvalue>" >> record.$identifier/dublin_core.xml
+    echo "  <dcvalue qualifier=\"abstract\" element=\"description\">$abstract</dcvalue>" >> record.$identifier/dublin_core.xml
+    echo "  <dcvalue qualifier=\"none\" element=\"type\">$type</dcvalue>" >> record.$identifier/dublin_core.xml
+    echo "</dublin_core>" >> record.$identifier/dublin_core.xml
+
+
+done < /tmp/dspace/no_head.csv
+done
+IFS=$OLDIFS
 }  
 
+#for i in $(ls $objects); do
+#while read $field_headers; do
+#echo $author
+#echo $identifier
+#done < /tmp/dspace/no_head.csv
+#done 
 
-
-#            identifier=$(head -n $c3 /tmp/dspace/identifier.txt | tail -1)
+#while read line; do
+#id=$(basename $line .pdf)
+#echo $id
+#done < /tmp/dspace/objects.txt
 
 package
+populate
 
 
-
-
-#while read line
-#        do
-#            data=$(echo $line | cut -d'|' -f$COUNTER)
-#            echo "  <dcvalue element=\"identifier\" qualifier=\"none\">$data</dcvalue>" #>> record.$id/dublin_core.xml
-#            COUNTER=$((COUNTER+1))
-#        done < sample.csv
-#
-
-
-#OLDIFS=$IFS
-#IFS='|'
-#[ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 99; }
-#while read one two three
-#do
-#	echo "Name : $one"
-#	echo "DOB : $two"
-#	echo "SSN : $three"
-#done < $csv
-#IFS=$OLDIFS
-
-#        COUNTER=1
- #       while read line
-  #      do
-   #         data=$(echo $line | cut -d'|' -f$COUNTER)
-     #       echo "  <dcvalue element=\"identifier\" qualifier=\"none\">$data</dcvalue>" >> record.$id/dublin_core.xml
-    #        COUNTER=$((COUNTER+1))
-      #  done < sample.csv
-
-#echo $field_headers
-#echo $no_headers
-
-
-#sed ':a;N;$!ba;s/\n/ /g'
-
-#tr '\n' ' ' < input_filename
