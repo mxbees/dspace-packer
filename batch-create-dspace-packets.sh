@@ -10,19 +10,25 @@ no_objects=$(ls -1 $objects | wc -l)
 c1=1
 c2=1
 c3=1
-
+id=$( ls $objects | xargs -I{} basename {} .pdf )
 #mkdir /tmp/dspace
 
+package () {
 for i in $(ls $objects)
 do
     #make packages
-    id=$( basename $i .pdf )
     mkdir record.$id
     cp $objects/$i record.$id/
     echo $i > record.$id/contents
     echo '<?xml version="1.0" encoding="UTF-8"?>' > record.$id/dublin_core.xml
     echo '<dublin_core>' >> record.$id/dublin_core.xml
+    
+done
+}
+
+
     #split metadata
+split () {
     while [ $c1 -le $field_number ]
     do
         x=$(head -n 1 $csv | awk -v r=$c2 'BEGIN { FS = "|" } ; {print $r}')
@@ -30,42 +36,45 @@ do
     c1=$((c1+1))
     c2=$((c2+1))
     done
-    
+}    
+populate () {
     for j in $(ls /tmp/dspace/*.txt)
     do
         y=$( basename $j .txt )
-        #while [ $c3 -le $no_objects ]
         
         if [ "$y" = "identifier" ]
         then
-        while read line
+        while [ $c3 -le $no_objects ] 
         do
-            if [ "$id" = "$line" ]
+            line=$(awk -v c=$c3 'NR==c{print; exit}' $j)
+            if [ "$c3" = 1 ]
             then
                 echo "    <dcvalue element=\"identifier\" qualifier=\"none\">$line</dcvalue>" >> record.$id/dublin_core.xml
             fi
-        done < $j
+        c3=$((c3+1)) 
+        done 
         fi
+        
         if [ "$y" = "abstract" ]
         then
         while read line
         do
             if [ "$id" = "$line" ]
             then
-                echo "  <dcvalue element=\"description\" qualifier=\"abstract\">$line</dcvalue>" #>> record.$id/dublin_core.xml
+                echo "  <dcvalue element=\"description\" qualifier=\"abstract\">$line</dcvalue>" >> record.$id/dublin_core.xml
             fi
         done < $j
         fi
         
     done
     echo '</dublin_core>' >> record.$id/dublin_core.xml
-done
+}  
 
 
 
 #            identifier=$(head -n $c3 /tmp/dspace/identifier.txt | tail -1)
 
-
+package
 
 
 
