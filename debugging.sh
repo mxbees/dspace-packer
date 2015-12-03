@@ -24,4 +24,16 @@ do
     echo "</dublin_core>" >> record.$id/dublin_core.xml
 done < /tmp/dspace/no_head.csv
 
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > record.$identifier/dublin_core.xml
+    echo "<dublin_core>" >> record.$identifier/dublin_core.xml
+    echo "  <dcvalue qualifier=\"none\" element=\"title\">$title</dcvalue" >> record.$identifier/dublin_core.xml
+    echo "  <dcvalue qualifier=\"author\" element=\"contributor\">$author</dcvalue>" >> record.$identifier/dublin_core.xml
+    echo "  <dcvalue element=\"contributor\" qualifier=\"advisor\">$advisor</dcvalue>" >> record.$identifier/dublin_core.xml
+    echo "  <dcvalue qualifier=\"issued\" element=\"date\">$year</dcvalue" >> record.$identifier/dublin_core.xml
+    echo "  <dcvalue qualifier=\"none\" element=\"identifier\">$identifier</dcvalue>" >> record.$identifier/dublin_core.xml
+    echo "  <dcvalue qualifier=\"citation\" element=\"identifier\">$citation</dcvalue>" >> record.$identifier/dublin_core.xml
+    echo "  <dcvalue qualifier=\"abstract\" element=\"description\">$abstract</dcvalue>" >> record.$identifier/dublin_core.xml
+    echo "  <dcvalue qualifier=\"none\" element=\"type\">$type</dcvalue>" >> record.$identifier/dublin_core.xml
+    echo "</dublin_core>" >> record.$identifier/dublin_core.xml
+
 
