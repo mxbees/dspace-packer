@@ -9,3 +9,5 @@ test-files/*
 record.*
 misc/
 misc/*
+data-samples/
+data-samples/*
