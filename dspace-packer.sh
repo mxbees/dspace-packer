@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#sudo python xlsx2csv/xlsx2csv.py -e -d "@" xls_sample.xlsx sample.csv #don't forget to swap these out for CLI args $1 and $2
+#sudo python xlsx2csv/xlsx2csv.py -e -d "^" xls_sample.xlsx sample.csv #don't forget to swap these out for CLI args $1 and $2
 
-csv='telegram_sample.csv'
+csv='rs_sample.csv'
 field_number=$(head -n 1 $csv | awk -F'|' '{print NF-1}')
 #field_headers=$(head -n 1 $csv)
 #echo $field_headers
@@ -26,21 +26,41 @@ do
 done < /tmp/dspace/objects.txt
 }
 
-make_dc_record () {
+make_dc_header () {
+#for j in $( ls $objects ); do
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" #> record.$dc_identifier/dublin_core.xml
+    echo "<dublin_core>" #>> record.$dc_identifier/dublin_core.xml
+#done
+}
+
+make_dc_footer () {
+    echo "</dublin_core>" #>> record.$dc_identifier/dublin_core.xml
+}
+
+make_dc_body () {
 OLDIFS=$IFS
-IFS='@'
-head -n 1 $csv > /tmp/dspace/field_headers.csv
+IFS='^'
+header_row=$(head -n1 $csv)
+read -a all_headers x <<< "$header_row"
+for header in "${all_headers[@]}"; do
+    
+#    IFS='_' read -ra dc <<< "${header}"
+#    element="${dc[0]}"
+#    qualifier="${dc[0]}"
+#    while read -r; do
+#            printf '%b\n' "  <dcvalue element=\"$element\" qualifier=\"$qualifier\">$REPLY</dcvalue>" #>> record.$dc_identifier/dublin_core.xml
+#        done < /tmp/dspace/no_headers.csv
+done 
+IFS=$OLDIFS
+}
+
+make_dc_record () {
 for j in $( ls $objects ) 
 do
-    while read -r $(cat /tmp/dspace/field_headers.csv)
-    do
-        echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > record.$dc_identifier/dublin_core.xml
-        echo "<dublin_core>" >> record.$dc_identifier/dublin_core.xml
-        printf '%b\n' "  <dcvalue qualifier=\"none\" element=\"title\">$dc_title</dcvalue>" >> record.$dc_identifier/dublin_core.xml
-        echo "</dublin_core>" >> record.$dc_identifier/dublin_core.xml
-    done < /tmp/dspace/no_headers.csv
+    make_dc_header
+    make_dc_body
+    make_dc_footer
 done
-IFS=$OLDIFS
 }
 
 clean_ampersands () {
@@ -50,7 +70,8 @@ do
     sed -i 's/&/&amp;/g' $line
 done < /tmp/dspace/dc_records.txt
 }
-head -n 1 $csv > /tmp/dspace/field_headers.txt
+head -n 1 $csv > /tmp/dspace/field_headers.csv
 #make_simple_archive_format_package
-make_dc_record
+
+make_dc_body
 #clean_ampersands
