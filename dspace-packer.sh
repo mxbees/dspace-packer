@@ -46,14 +46,9 @@ while read -a line; do
 for header in "${all_headers[@]}"; do
     element=$(echo "$header" | cut -d'_' -f1)
     qualifier=$(echo "$header" | cut -d'_' -f2)
-    #echo "  <dcvalue element=\"$element\" qualifier=\"$qualifier\">"
-    printf '%b\n' "<dcvalue element=\"$element\" qualifier=\"$qualifier\">${line[$c1]}</dcvalue>" #>> record.$dc_identifier/dublin_core.xml
-    c2=$((c2+1))
-    
-    #echo "</dcvalue>"
+    printf '%b\n' "<dcvalue element=\"$element\" qualifier=\"$qualifier\">${line[$c1]}</dcvalue>" >> record.$dc_identifier/dublin_core.xml
 c1=$((c1+1))
 done
-
 done < /tmp/dspace/no_headers.csv
 IFS=$OLDIFS
 }
@@ -77,5 +72,5 @@ done < /tmp/dspace/dc_records.txt
 head -n 1 $csv > /tmp/dspace/field_headers.csv
 #make_simple_archive_format_package
 
-make_dc_body
+make_dc_record
 #clean_ampersands
