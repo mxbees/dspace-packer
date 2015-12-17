@@ -43,10 +43,10 @@ IFS='^'
 header_row=$(head -n1 $csv)
 read -a all_headers x <<< "$header_row"
 for header in "${all_headers[@]}"; do
-    
+    element=$(echo "${header[0]}" | cut -d'_' f1)
+    #qualifier="${dc[0]}"
 #    IFS='_' read -ra dc <<< "${header}"
-#    element="${dc[0]}"
-#    qualifier="${dc[0]}"
+#    
 #    while read -r; do
 #            printf '%b\n' "  <dcvalue element=\"$element\" qualifier=\"$qualifier\">$REPLY</dcvalue>" #>> record.$dc_identifier/dublin_core.xml
 #        done < /tmp/dspace/no_headers.csv
