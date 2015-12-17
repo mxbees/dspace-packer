@@ -8,8 +8,8 @@ field_number=$(head -n 1 $csv | awk -F'|' '{print NF-1}')
 #echo $field_headers
 objects='test-files'
 no_objects=$(ls -1 $objects | wc -l)
-c1=1
-c2=1
+c1=0
+c2=0
 c3=1
 #mkdir /tmp/dspace
 sed 1,1d $csv > /tmp/dspace/no_headers.csv
@@ -42,15 +42,19 @@ OLDIFS=$IFS
 IFS='^'
 header_row=$(head -n1 $csv)
 read -a all_headers x <<< "$header_row"
+while read -a line; do
 for header in "${all_headers[@]}"; do
-    element=$(echo "${header[0]}" | cut -d'_' f1)
-    #qualifier="${dc[0]}"
-#    IFS='_' read -ra dc <<< "${header}"
-#    
-#    while read -r; do
-#            printf '%b\n' "  <dcvalue element=\"$element\" qualifier=\"$qualifier\">$REPLY</dcvalue>" #>> record.$dc_identifier/dublin_core.xml
-#        done < /tmp/dspace/no_headers.csv
-done 
+    element=$(echo "$header" | cut -d'_' -f1)
+    qualifier=$(echo "$header" | cut -d'_' -f2)
+    #echo "  <dcvalue element=\"$element\" qualifier=\"$qualifier\">"
+    printf '%b\n' "<dcvalue element=\"$element\" qualifier=\"$qualifier\">${line[$c1]}</dcvalue>" #>> record.$dc_identifier/dublin_core.xml
+    c2=$((c2+1))
+    
+    #echo "</dcvalue>"
+c1=$((c1+1))
+done
+
+done < /tmp/dspace/no_headers.csv
 IFS=$OLDIFS
 }
 
