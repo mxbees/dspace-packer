@@ -3,62 +3,48 @@
 #sudo python xlsx2csv/xlsx2csv.py -e -d "^" xls_sample.xlsx sample.csv #don't forget to swap these out for CLI args $1 and $2
 
 csv='rs_sample.csv'
-field_number=$(head -n 1 $csv | awk -F'|' '{print NF-1}')
-#field_headers=$(head -n 1 $csv)
+header_row=$(head -n1 $csv)
 #echo $field_headers
 objects='test-files'
-no_objects=$(ls -1 $objects | wc -l)
-c1=0
-c2=0
-c3=1
+
 #mkdir /tmp/dspace
 sed 1,1d $csv > /tmp/dspace/no_headers.csv
 
 #make packages
 make_simple_archive_format_package () {
-ls $objects > /tmp/dspace/objects.txt
-while read line
+for i in $objects/*
 do
-    id=$(basename $line .jpg)
+    id=$(basename $i .pdf)
     mkdir record.$id
-    cp $objects/$line record.$id
+    cp $i record.$id
     echo $line > record.$id/contents
-done < /tmp/dspace/objects.txt
-}
-
-make_dc_header () {
-#for j in $( ls $objects ); do
-    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" #> record.$dc_identifier/dublin_core.xml
-    echo "<dublin_core>" #>> record.$dc_identifier/dublin_core.xml
-#done
-}
-
-make_dc_footer () {
-    echo "</dublin_core>" #>> record.$dc_identifier/dublin_core.xml
+done 
 }
 
 make_dc_body () {
 OLDIFS=$IFS
 IFS='^'
-header_row=$(head -n1 $csv)
 read -a all_headers x <<< "$header_row"
-while read -a line; do
-for header in "${all_headers[@]}"; do
-    element=$(echo "$header" | cut -d'_' -f1)
-    qualifier=$(echo "$header" | cut -d'_' -f2)
-    printf '%b\n' "<dcvalue element=\"$element\" qualifier=\"$qualifier\">${line[$c1]}</dcvalue>" >> record.$dc_identifier/dublin_core.xml
-c1=$((c1+1))
-done
+while read -a row; do
+    c1=0
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > record.$dc_identifier/dublin_core.xml
+    echo "<dublin_core>" >> record.$dc_identifier/dublin_core.xml
+    for header in "${all_headers[@]}"; do
+        element=$(echo "$header" | cut -d'_' -f1)
+        qualifier=$(echo "$header" | cut -d'_' -f2)
+        printf '%b\n' "<dcvalue element=\"$element\" qualifier=\"$qualifier\">${row[$c1]}<dcvalue>" >> record.$dc_identifier/dublin_core.xml
+        c1=$((c1+1))
+    done
+    echo "</dublin_core>" >> record.$dc_identifier/dublin_core.xml
 done < /tmp/dspace/no_headers.csv
 IFS=$OLDIFS
 }
 
 make_dc_record () {
-for j in $( ls $objects ) 
+for i in $objects/*
 do
-    make_dc_header
+    dc_identifier=$( basename $i .pdf )
     make_dc_body
-    make_dc_footer
 done
 }
 
@@ -70,7 +56,7 @@ do
 done < /tmp/dspace/dc_records.txt
 }
 head -n 1 $csv > /tmp/dspace/field_headers.csv
-#make_simple_archive_format_package
 
+make_simple_archive_format_package
 make_dc_record
-#clean_ampersands
+clean_ampersands
