@@ -58,10 +58,11 @@ done
 
 clean_ampersands () {
 find record.* -name dublin_core.xml > /tmp/dspace/dc_records.txt
-while read line
+#while read line
+for i in $(find record.* -name dublin_core.xml)
 do
-    sed -i 's/&/&amp;/g' $line
-done < /tmp/dspace/dc_records.txt
+    sed -i 's/&/&amp;/g' $i
+done #< /tmp/dspace/dc_records.txt
 }
 
 make_simple_archive_format_package
