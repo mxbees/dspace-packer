@@ -39,7 +39,7 @@ for header in "${all_headers[@]}"; do
     field=$(grep "$dc_identifier" $csv | cut -d'^' -f$c1)
     element=$(echo "$header" | cut -d'_' -f1)
     qualifier=$(echo "$header" | cut -d'_' -f2)
-    printf '%b\n' "<dcvalue element=\"$element\" qualifier=\"$qualifier\">$field<dcvalue>" >> record.$dc_identifier/dublin_core.xml
+    printf '%b\n' "<dcvalue element=\"$element\" qualifier=\"$qualifier\">$field</dcvalue>" >> record.$dc_identifier/dublin_core.xml
     c1=$((c1+1))
 done
 make_dc_footer
