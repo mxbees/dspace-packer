@@ -1,7 +1,7 @@
 #!/bin/bash
 
 new_csv=$( basename $1 .xlsx )
-sudo python xlsx2csv/xlsx2csv.py -e -d "^" $1 $new_csv.csv
+python xlsx2csv/xlsx2csv.py -e -d "^" $1 $new_csv.csv
 
 csv="$new_csv.csv"
 objects='test-files'
