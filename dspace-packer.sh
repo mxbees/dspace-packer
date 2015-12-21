@@ -64,5 +64,5 @@ done
 }
 
 #make_simple_archive_format_package
-#make_dc_record
-clean_ampersands
+make_dc_record
+#clean_ampersands
