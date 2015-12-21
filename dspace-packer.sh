@@ -21,21 +21,29 @@ do
 done 
 }
 
+make_dc_header () {
+echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > record.$dc_identifier/dublin_core.xml
+echo "<dublin_core>" >> record.$dc_identifier/dublin_core.xml
+}
+
+make_dc_footer () {
+echo "</dublin_core>" >> record.$dc_identifier/dublin_core.xml
+}
+
 make_dc_body () {
 OLDIFS=$IFS
 IFS='^'
 read -a all_headers x <<< "$header_row"
 while read -a row; do
     c1=0
-    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > record.$dc_identifier/dublin_core.xml
-    echo "<dublin_core>" >> record.$dc_identifier/dublin_core.xml
+    make_dc_header
     for header in "${all_headers[@]}"; do
         element=$(echo "$header" | cut -d'_' -f1)
         qualifier=$(echo "$header" | cut -d'_' -f2)
         printf '%b\n' "<dcvalue element=\"$element\" qualifier=\"$qualifier\">${row[$c1]}<dcvalue>" >> record.$dc_identifier/dublin_core.xml
         c1=$((c1+1))
     done
-    echo "</dublin_core>" >> record.$dc_identifier/dublin_core.xml
+    make_dc_footer
 done < /tmp/dspace/no_headers.csv
 IFS=$OLDIFS
 }
@@ -55,7 +63,6 @@ do
     sed -i 's/&/&amp;/g' $line
 done < /tmp/dspace/dc_records.txt
 }
-#head -n 1 $csv > /tmp/dspace/field_headers.csv
 
 make_simple_archive_format_package
 make_dc_record
