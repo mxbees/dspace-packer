@@ -1,14 +1,10 @@
 #!/bin/bash
 
-#sudo python xlsx2csv/xlsx2csv.py -e -d "^" xls_sample.xlsx sample.csv #don't forget to swap these out for CLI args $1 and $2
+new_csv=$( basename $1 .xlsx )
+sudo python xlsx2csv/xlsx2csv.py -e -d "^" $1 $new_csv.csv
 
-csv='rs_sample.csv'
-header_row=$(head -n1 $csv)
-#echo $field_headers
+csv="$new_csv.csv"
 objects='test-files'
-
-#mkdir /tmp/dspace
-sed 1,1d $csv > /tmp/dspace/no_headers.csv
 
 #make packages
 make_simple_archive_format_package () {
@@ -33,18 +29,20 @@ echo "</dublin_core>" >> record.$dc_identifier/dublin_core.xml
 make_dc_body () {
 OLDIFS=$IFS
 IFS='^'
+header_row=$(head -n1 $csv)
+sed 1,1d $csv > /tmp/no_headers.csv
 read -a all_headers x <<< "$header_row"
-while read -a row; do
-    c1=0
-    make_dc_header
-    for header in "${all_headers[@]}"; do
-        element=$(echo "$header" | cut -d'_' -f1)
-        qualifier=$(echo "$header" | cut -d'_' -f2)
-        printf '%b\n' "<dcvalue element=\"$element\" qualifier=\"$qualifier\">${row[$c1]}<dcvalue>" >> record.$dc_identifier/dublin_core.xml
-        c1=$((c1+1))
-    done
-    make_dc_footer
-done < /tmp/dspace/no_headers.csv
+make_dc_header
+c1=1
+
+for header in "${all_headers[@]}"; do
+    field=$(grep "$dc_identifier" $csv | cut -d'^' -f$c1)
+    element=$(echo "$header" | cut -d'_' -f1)
+    qualifier=$(echo "$header" | cut -d'_' -f2)
+    printf '%b\n' "<dcvalue element=\"$element\" qualifier=\"$qualifier\">$field<dcvalue>" >> record.$dc_identifier/dublin_core.xml
+    c1=$((c1+1))
+done
+make_dc_footer
 IFS=$OLDIFS
 }
 
@@ -63,6 +61,6 @@ do
 done
 }
 
-#make_simple_archive_format_package
+make_simple_archive_format_package
 make_dc_record
-#clean_ampersands
+clean_ampersands
