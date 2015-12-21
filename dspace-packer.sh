@@ -55,7 +55,7 @@ do
     sed -i 's/&/&amp;/g' $line
 done < /tmp/dspace/dc_records.txt
 }
-head -n 1 $csv > /tmp/dspace/field_headers.csv
+#head -n 1 $csv > /tmp/dspace/field_headers.csv
 
 make_simple_archive_format_package
 make_dc_record
