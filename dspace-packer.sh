@@ -2,22 +2,67 @@
 #This script takes a commandline argument, essentially the xlsx file that you're working with.
 
 #This is just to get the name of the xlsx file so we can use it for the resulting csv.
-new_csv=$( basename $1 .xlsx )
+new_csv=$( basename $4 .xlsx )
 csv="$new_csv.csv"
+c1=1
+
+while getopts :d:o:s:h opt; do
+  case $opt in
+    d)
+        delimiter=$OPTARG
+        ;;
+    o)
+        objects=$OPTARG
+        ;;
+    s)
+        suffix=$OPTARG
+        ;;
+    h)
+        echo "
+  The flags for this script are all required for it to    
+  function correctly.
+        
+  Flags:
+    -d  # Set the delimiter for the CSV output, ensure
+        # that the delimiter is not in any field.
+    -o  # Path to the directory of objects.
+        # The trailing slash is not required
+        # Example: path/to/directory
+    -s  # For the suffix of the objects.
+        # Examples: 'pdf' 'jpg'
+            
+    -h  # Bring up this help text" 1>&2
+        exit 1
+        ;;
+    \?)
+        echo "
+  Invalid option: -$OPTARG
+  Use -h for help." 1>&2
+        exit 1
+        ;;
+    :)
+        echo "
+  Option -$OPTARG requires an argument.
+  Use -h for help." 1>&2
+        exit 1
+        ;;
+  esac
+done
+shift $((OPTIND -1))
 
 #calling the python module that converts the xlsx file to a csv. depending on your data, you might have to change the delimiter. You want one that is *not* contained in any of the fields, otherwise your data will be parsed in strange ways later on.
 sudo python xlsx2csv/xlsx2csv.py -e -d $delimiter $1 $new_csv.csv
 
 #Some variable declarations
-objects='test-files'
-delimiter="^"
-suffix='pdf'
-c1=1
+#objects='test-files'
+#delimiter="^"
+#suffix='pdf'
+
 
 #the function to make packages
 make_simple_archive_format_package () {
 #looks in the directory of objects you have and iterates over them
-for i in $objects/*
+for i in $objects*
 do
     id=$(basename $i .$suffix)
     #creates each package directory
@@ -25,7 +70,7 @@ do
     #copies the objects into the package
     cp $i record.$id
     #this creates the required 'contents' files as specified in the DSpace Simple Archival Format
-    echo $line > record.$id/contents
+    echo $id.$suffix > record.$id/contents
 done 
 }
 
@@ -73,7 +118,7 @@ IFS=$OLDIFS
 make_dc_record () {
 
 #loop to iterate over all the objects in the directory
-for i in $objects/*
+for i in $objects*
 do    
     #grabs the identifier need in the make_dc_body function.
     dc_identifier=$( basename $i .$suffix )
@@ -93,6 +138,6 @@ done
 }
 
 #call all the functions to do all the things.
-#make_simple_archive_format_package
+make_simple_archive_format_package
 make_dc_record
 clean_ampersands
