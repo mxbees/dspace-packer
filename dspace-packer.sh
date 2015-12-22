@@ -11,7 +11,7 @@ sudo python xlsx2csv/xlsx2csv.py -e -d $delimiter $1 $new_csv.csv
 #Some variable declarations
 objects='test-files'
 delimiter="^"
-suffix='.pdf'
+suffix='pdf'
 c1=1
 
 #the function to make packages
@@ -19,7 +19,7 @@ make_simple_archive_format_package () {
 #looks in the directory of objects you have and iterates over them
 for i in $objects/*
 do
-    id=$(basename $i $suffix)
+    id=$(basename $i .$suffix)
     #creates each package directory
     mkdir record.$id
     #copies the objects into the package
@@ -76,7 +76,7 @@ make_dc_record () {
 for i in $objects/*
 do    
     #grabs the identifier need in the make_dc_body function.
-    dc_identifier=$( basename $i $suffix )
+    dc_identifier=$( basename $i .$suffix )
     make_dc_body
     c1=1
 done
